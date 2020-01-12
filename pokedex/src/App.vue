@@ -2,19 +2,22 @@
   <v-app>
 
   
-      <HelloWorld/>
-   
+      <pokedex/>
+    <v-footer color="red darken-2 white--text" fixed>
+    <v-spacer></v-spacer>
+    <div>&copy; Adrian Sailer | Pokedex |{{ new Date().getFullYear() }}</div>
+  </v-footer>
   </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld';
+import pokedex from './components/pokedex';
 
 export default {
   name: 'App',
 
   components: {
-    HelloWorld,
+    pokedex,
   },
 
   data: () => ({

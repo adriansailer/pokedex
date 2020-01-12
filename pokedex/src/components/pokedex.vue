@@ -1,12 +1,17 @@
 <template>
   <v-card class="mx-auto">
     <v-app-bar dark color="red darken-1">
-      <v-app-bar-nav-icon></v-app-bar-nav-icon>
-
+    
       <v-toolbar-title>Pokedex</v-toolbar-title>
 
       <v-spacer></v-spacer>
-
+      <v-text-field
+            v-model="search"
+           
+            clearable
+            
+            type="text"
+          ></v-text-field>
       <v-btn icon>
         <v-icon>mdi-magnify</v-icon>
       </v-btn>
@@ -16,7 +21,9 @@
   
       <v-row dense>
         <v-col v-for="(pokemon, i) in pokemons" :key="i" cols="6">
-          <v-card  dark>
+          <v-card  
+        class="elevation-6"
+          dark>
            
           
                 <v-card-title
@@ -54,6 +61,14 @@ export default {
     avatar: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/",
    
   }),
+
+  computed: {
+    searchPokemon(){
+      return this.pokemons.filter((pokemon)=>{
+        return pokemon.name.match(this.search)
+      })
+    }
+  },
   
 
   methods: {

@@ -2,17 +2,23 @@
   <v-row justify="center">
     <v-dialog v-model="dialog" persistent>
       <template v-slot:activator="{ on }">
-        <v-btn color="primary" @click="getPokemonDetail()" dark v-on="on"
+        <v-btn color="warning" outlined @click="getPokemonDetail()" dark v-on="on"
           >Show Info</v-btn
         >
       </template>
-      <v-card v-if="pokemon">
+      <v-card v-if="pokemon"  class="elevation-4">
+ 
         <v-card-actions class="red ">
           <v-card-title class="headline text-uppercase white--text">{{
             pokemon.species.name
-          }}</v-card-title>
+          }}
+                 </v-card-title>
+                
+                 
           <v-spacer></v-spacer>
-
+          
+   <v-btn class="white--text" text @click="next(num-1)"><</v-btn>
+          <v-btn small class="white--text"  text @click="next(num+1)">></v-btn>
           <v-btn
             color="white darken-1"
             class="headline text-uppercase"
@@ -21,24 +27,28 @@
             >x</v-btn
           >
         </v-card-actions>
-
+ <v-parallax
+    dark
+    src="https://cache.desktopnexus.com/thumbseg/1327/1327843-bigthumbnail.jpg"
+    height="280"
+  >
         <v-img
-          v-if="number < 10"
+          v-if="num < 10"
           height="250"
-          :src="pic + '00' + number + '.png'"
+          :src="pic + '00' + num + '.png'"
         ></v-img>
         <v-img
-          v-if="number >= 10 && number <= 99"
+          v-if="num >= 10 && num <= 99"
           height="250"
-          :src="pic + '0' + number + '.png'"
+          :src="pic + '0' + num + '.png'"
         ></v-img>
 
         <v-img
-          v-if="number >= 100"
+          v-if="num >= 100"
           height="250"
-          :src="pic  + number + '.png'"
+          :src="pic  + num + '.png'"
         ></v-img>
-
+ </v-parallax>
         <v-card-text>
           <v-divider class=" mt-2"></v-divider>
 
@@ -82,8 +92,10 @@
         </v-card-text>
                   <v-divider class="mx-4 mt-2"></v-divider>
         <v-card-actions>
-          <v-spacer></v-spacer>
-
+      
+ <v-btn color="red darken-1"  text @click="next(num-1)"><</v-btn>
+          <v-btn small color="red darken-1"  text @click="next(num+1)">></v-btn>
+              <v-spacer></v-spacer>
           <v-btn color="green darken-1" text @click="dialog = false"
             >Close</v-btn
           >
@@ -99,12 +111,40 @@ export default {
   data() {
     return {
       name: null,
+      num: "",
       dialog: false,
       pokemon: null,
       pic: "https://assets.pokemon.com/assets/cms2/img/pokedex/full/"
     };
   },
   methods: {
+
+    next(num){
+      console.log(num)
+   if(num == 0){
+     this.num = 1;
+   }
+   else{
+ this.num = num 
+   }
+     
+ var self = this;
+      axios
+        .get("https://pokeapi.co/api/v2/pokemon/" + this.num)
+        .then(function(response) {
+          // handle success
+          console.log(response);
+          self.pokemon = response.data;
+        })
+        .catch(function(error) {
+          // handle error
+          console.log(error);
+        })
+        .finally(function() {
+          // always executed
+        });
+    
+    },
     getPokemonDetail() {
       var self = this;
       axios
@@ -120,9 +160,12 @@ export default {
         })
         .finally(function() {
           // always executed
+          self.num = self.number;
         });
     }
   },
-  created() {}
+  created() {
+    
+  }
 };
 </script>
